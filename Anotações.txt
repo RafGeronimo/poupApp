@@ -157,3 +157,79 @@ Veja como isso é feito no componente App:
             modalRef.current?.abrir()
         }>Abrir Modal</button>;
         };
+
+
+-----------------------
+
+
+No TypeScriptpodemos definir interfaces para respostas HTTP e melhorar o tratamento de erros.
+
+1. Tipando promises
+O problema de não tipar promises é que você nunca tem certeza do que será retornado. 
+Com TypeScript, você pode explicitar o tipo esperado e evitar checagens desnecessárias:
+
+    const obterMensagem = (): Promise<string> => {
+    return new Promise((resolve) => setTimeout(() => resolve("Sucesso!"), 1000));
+    };
+
+    obterMensagem().then((mensagem) => {
+    console.log(mensagem.toUpperCase()); // TypeScript garante que mensagem é uma string
+    });
+
+Aqui, o TypeScript já avisa caso tentemos acessar propriedades inexistentes ou façamos operações inválidas.
+
+Se o retorno da promisse não for uma string provavelmente um erro pipocará na sua IDE e de cara você saberá os problemas com a sua requisição.
+Vale sempre lembrar que validar com um Zod da vida aumenta a segurança de dados.
+
+2. Melhorando requisições com Axios
+
+Com Axios e TypeScript, podemos definir a estrutura da resposta e garantir que os dados sempre sigam um formato esperado:
+
+import axios from "axios";
+
+    interface Usuario {
+    id: number;
+    nome: string;
+    email: string;
+    }
+
+    const buscarUsuarios = async (): Promise<Usuario[]> => {
+    const { data } = await axios.get<Usuario[]>("https://api.exemplo.com/usuarios");
+    return data;
+    };
+
+    buscarUsuarios().then((usuarios) => {
+    console.log(usuarios[0].nome); // Sem suposições sobre estrutura de dados
+    });
+
+No código acima, o axios.get<Usuario[]> já define o tipo esperado da resposta. 
+O retorno da função buscarUsuarios está explícito (Promise<Usuario[]>), uma promessa de um array de usuários, evitando inferências erradas. 
+Com a tipagem, evitamos checagens desnecessárias no .then() pois garantimos que os dados que estão chegando são do tipo esperado.
+
+3. Tratamento de erros com TypeScript
+Erros em operações assíncronas podem ser imprevisíveis. 
+Tipar corretamente evita que você caia em armadilhas do catch, onde o erro pode ser um string, error ou qualquer outra coisa:
+
+    async function buscarDados(): Promise<void> {
+    try {
+        const resposta = await fetch("https://api.exemplo.com/dados");
+
+        if (!resposta.ok) {
+        throw new Error(`Erro HTTP: ${resposta.status}`);
+        }
+
+        const dados: unknown = await resposta.json();
+        console.log(dados);
+    } catch (erro: unknown) {
+        if (erro instanceof Error) {
+        console.error("Erro ao buscar dados:", erro.message);
+        } else {
+        console.error("Erro desconhecido");
+        }
+    }
+    }
+
+O catch (erro: unknown) obriga a validação antes de acessar erro.message. 
+O throw new Error(...) mantém um padrão claro para mensagens de erro e o uso do tipo unknown força a validação explícita, evitando suposições erradas.
+
+Artigo sobre promises: https://dev.to/bcostaaa01/promises-in-javascript-and-typescript-5eh9
