@@ -13,10 +13,14 @@ export const StyledUsuario = styled.div`
   }
 `;
 
-const SaudacaoUsuario = () => {
+type SaudacaoUsuarioProps = {
+  userName: string;
+};
+
+const SaudacaoUsuario = ({ userName }: SaudacaoUsuarioProps) => {
   return (
     <StyledUsuario>
-      <h1>Olá, Neilton</h1>
+      <h1>Olá, {userName}</h1>
       <p>Veja como estão suas finanças hoje.</p>
     </StyledUsuario>
   );

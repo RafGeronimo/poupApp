@@ -1,11 +1,11 @@
 export interface IUser {
-  id: number;
+  id: string;
   name: string;
   income: number;
 }
 
 export interface ITransaction {
-  id: number;
+  id: string;
   name: string;
   value: number;
   type: "income" | "expense";
