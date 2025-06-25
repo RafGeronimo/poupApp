@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import useMainContext from "../../hooks/useMainContext";
 
 export const StyledUsuario = styled.div`
   grid-area: usuario;
@@ -14,9 +15,10 @@ export const StyledUsuario = styled.div`
 `;
 
 const SaudacaoUsuario = () => {
+  const { user } = useMainContext();
   return (
     <StyledUsuario>
-      <h1>Olá, Neilton</h1>
+      <h1>Olá, {user?.name}</h1>
       <p>Veja como estão suas finanças hoje.</p>
     </StyledUsuario>
   );

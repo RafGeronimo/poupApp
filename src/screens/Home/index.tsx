@@ -4,12 +4,7 @@ import BarraPesquisa from "../../componentes/BarraPesquisa";
 import OrcamentoDiario from "../../componentes/OrcamentoDiario";
 import SaudacaoUsuario from "../../componentes/SaudacaoUsuario";
 import Transacoes from "../../componentes/Transacoes";
-import {
-  Container,
-  Movimentacoes,
-  Orcamento,
-  TransacoesWrapper,
-} from "./style";
+import { Container, Movimentacoes, Orcamento, TransacoesWrapper } from "./style";
 
 function Home() {
   return (

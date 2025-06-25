@@ -1,28 +1,35 @@
 import { useState } from "react";
-import {
-  Section,
-  Container,
-  Title,
-  Description,
-  Illustration,
-  SectionWrapper,
-} from "./style.js";
+import { Section, Container, Title, Description, Illustration, SectionWrapper } from "./style.js";
 import ilustracao from "../../assets/images/ilustracao-cadastro.png";
 import { Form, useNavigate } from "react-router";
 import Botao from "../../componentes/Botao/index.js";
 import CampoTexto from "../../componentes/CampoTexto/index.js";
 import Fieldset from "../../componentes/Fieldset/index.js";
 import Label from "../../componentes/Label/index.js";
+import { IUser } from "../../types/index.js";
+import useMainContext from "../../hooks/useMainContext/index.js";
 
 const Cadastro = () => {
-  const [nome, setNome] = useState("");
-  const [renda, setRenda] = useState("");
+  const { createNewUser } = useMainContext();
+  const [form, setForm] = useState<Omit<IUser, "id">>({
+    name: "",
+    income: 0,
+  });
 
   const navigate = useNavigate();
 
-  const aoSubmeterFormulario = (evento: React.FormEvent) => {
+  const onSubmit = async (evento: React.FormEvent) => {
     evento.preventDefault();
+    try {
+      await createNewUser(form);
+    } catch (error) {
+      console.error(error);
+    }
     navigate("/home");
+  };
+
+  const onChange = (field: "name" | "income", value: string | number) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -31,9 +38,8 @@ const Cadastro = () => {
         <Container>
           <Title>Configuração financeira</Title>
           <Description>
-            Boas-vindas à plataforma que protege seu bolso! Antes de começar,
-            precisamos de algumas informações sobre sua rotina financeira. Vamos
-            lá?
+            Boas-vindas à plataforma que protege seu bolso! Antes de começar, precisamos de algumas informações sobre
+            sua rotina financeira. Vamos lá?
           </Description>
           <Form>
             <Fieldset>
@@ -41,8 +47,8 @@ const Cadastro = () => {
               <CampoTexto
                 type="text"
                 name="nome"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
+                value={form.name}
+                onChange={(e) => onChange("name", e.target.value)}
               />
             </Fieldset>
             <Fieldset>
@@ -50,19 +56,16 @@ const Cadastro = () => {
               <CampoTexto
                 type="text"
                 name="renda"
-                value={renda}
-                onChange={(e) => setRenda(e.target.value)}
+                value={form.income}
+                onChange={(e) => onChange("income", Number(e.target.value))}
               />
             </Fieldset>
           </Form>
-          <Botao $variante="primario" onClick={aoSubmeterFormulario}>
+          <Botao $variante="primario" onClick={onSubmit}>
             Ir para o app
           </Botao>
         </Container>
-        <Illustration
-          src={ilustracao}
-          alt="ilustração da tela de cadastro. Um avatar mexendo em alguns gráficos"
-        />
+        <Illustration src={ilustracao} alt="ilustração da tela de cadastro. Um avatar mexendo em alguns gráficos" />
       </SectionWrapper>
     </Section>
   );

@@ -9,7 +9,7 @@ interface MainProviderProps {
 
 interface MainContextProps {
   user?: IUser;
-  createNewUser: (user: Omit<IUser, "id">) => void;
+  createNewUser: (user: Omit<IUser, "id">) => Promise<void>;
 }
 
 export const MainContext = createContext<MainContextProps | undefined>(undefined);

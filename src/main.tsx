@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import Home from "./screens/Home";
 import Cadastro from "./screens/Cadastro";
 import GlobalStyle from "./GlobalStyle";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MainProvider from "./contexts/MainContext";
 
 const router = createBrowserRouter([
@@ -17,11 +18,15 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MainProvider>
-      <GlobalStyle />
-      <RouterProvider router={router} />
-    </MainProvider>
+    <QueryClientProvider client={queryClient}>
+      <MainProvider>
+        <GlobalStyle />
+        <RouterProvider router={router} />
+      </MainProvider>
+    </QueryClientProvider>
   </StrictMode>
 );
