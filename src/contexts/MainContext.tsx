@@ -13,6 +13,7 @@ interface MainContextProps {
 }
 
 export const MainContext = createContext<MainContextProps | undefined>(undefined);
+
 const MainProvider = ({ children }: MainProviderProps) => {
   const [user, setUser] = useState<IUser>();
 

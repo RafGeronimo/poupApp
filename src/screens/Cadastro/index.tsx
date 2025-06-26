@@ -20,11 +20,7 @@ const Cadastro = () => {
 
   const onSubmit = async (evento: React.FormEvent) => {
     evento.preventDefault();
-    try {
-      await createNewUser(form);
-    } catch (error) {
-      console.error(error);
-    }
+    await createNewUser(form);
     navigate("/home");
   };
 
