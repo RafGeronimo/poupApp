@@ -11,7 +11,7 @@ import useMainContext from "../../hooks/useMainContext/index.js";
 
 const Cadastro = () => {
   const { createNewUser } = useMainContext();
-  const [form, setForm] = useState<Omit<IUser, "id">>({
+  const [form, setForm] = useState<Omit<IUser, "id" | "dailyBalance">>({
     name: "",
     income: 0,
   });

@@ -2,6 +2,7 @@ export interface IUser {
   id: string;
   name: string;
   income: number;
+  dailyBalance: number;
 }
 
 export interface ITransaction {

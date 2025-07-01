@@ -4,7 +4,29 @@
       "id": "4ad7",
       "name": "Rafael Geronimo",
       "income": 666
+    },
+    {
+      "id": "c583",
+      "name": "Rafael",
+      "income": 0
     }
   ],
-  "transactions": []
+  "transactions": [
+    {
+      "id": "0599",
+      "name": "pix",
+      "value": "100",
+      "type": "receita",
+      "category": "Investimentos",
+      "date": "2025-07-30"
+    },
+    {
+      "id": "f63b",
+      "name": "Mercado",
+      "value": "50",
+      "type": "despesa",
+      "category": "Alimentação",
+      "date": "2025-07-30"
+    }
+  ]
 }
