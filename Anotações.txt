@@ -233,3 +233,228 @@ O catch (erro: unknown) obriga a validação antes de acessar erro.message.
 O throw new Error(...) mantém um padrão claro para mensagens de erro e o uso do tipo unknown força a validação explícita, evitando suposições erradas.
 
 Artigo sobre promises: https://dev.to/bcostaaa01/promises-in-javascript-and-typescript-5eh9
+
+=============================================
+
+Operadores JavaScript/TypeScript
+
+1. Operador de coalescência nula (??)
+O operador de coalescência nula (??) é usado para fornecer um valor padrão quando uma variável é null ou undefined. 
+Isso é útil quando você quer garantir que uma variável sempre tenha um valor, mesmo que não tenha sido definida.
+
+Imagine que você tem uma variável que pode não ter sido inicializada:
+
+let nome;
+
+Se você quiser garantir que nome tenha um valor, você pode usar o operador de coalescência nula:
+
+let nomeCompleto = nome ?? "Nome não fornecido";
+console.log(nomeCompleto); // Saída: "Nome não fornecido"
+
+Neste exemplo, como nome é undefined, o valor "Nome não fornecido" é atribuído a nomeCompleto.
+
+Antes do operador de coalescência nula, os programadores usavam o operador || (ou lógico) para fornecer valores padrão. 
+No entanto, isso poderia levar a resultados inesperados se o valor fosse 0, “'' (string vazia) ou false, pois todos são considerados "falsy" em JavaScript.
+
+O operador (??) resolve esse problema, pois só considera null e undefined como valores que precisam de um padrão.
+
+2. Operador de encadeamento opcional (?.)
+O operador de encadeamento opcional (?.) acessa propriedades de objetos de forma segura, sem causar erros se uma propriedade intermediária for null ou undefined.
+
+Suponha que você tenha um objeto que pode ou não ter certas propriedades:
+
+let usuario = {
+  perfil: {
+    nome: "Alice"
+  }
+};
+
+Se você tentar acessar uma propriedade que não existe, como usuario.endereco.rua, isso causaria um erro. 
+Com o encadeamento opcional, você pode fazer isso de forma segura:
+
+let rua = usuario.endereco?.rua;
+console.log(rua); // Saída: undefined
+
+O encadeamento opcional ajuda a evitar erros ao acessar propriedades de objetos complexos, sobretudo quando lidamos com dados de APIs, 
+caso em que nem todas as propriedades são garantidas.
+
+3. Operador de atribuição lógica (&&=, ||=, ??=)
+Os operadores de atribuição lógica combinam operações lógicas com atribuição. Eles são úteis para atualizar o valor de uma variável com base em uma condição lógica.
+
+&&=: Atribui um novo valor se a variável atual for "truthy".
+||=: Atribui um novo valor se a variável atual for "falsy".
+??=: Atribui um novo valor se a variável atual for null ou undefined.
+
+Exemplo:
+
+let valor = null;
+valor ??= "Valor padrão";
+console.log(valor); // Saída: "Valor padrão"
+
+let ativo = true;
+ativo &&= false;
+console.log(ativo); // Saída: false
+
+let texto = "";
+texto ||= "Texto padrão";
+console.log(texto); // Saída: "Texto padrão"
+
+4. Para mergulhos mais profundos
+documentação oficial do JavaScript: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators
+
+
+Utilitários de tipos do TypeScript
+
+
+1. Omit
+O Omit (“omitir”) é um utilitário que cria um novo tipo excluindo algumas propriedades de um tipo existente. 
+Imagine que você tem um objeto com várias propriedades, mas quer criar um novo tipo que não inclua algumas delas. O Omit faz exatamente isso.
+
+Exemplo:
+
+type Pessoa = {
+  nome: string;
+  idade: number;
+  email: string;
+};
+
+type PessoaSemEmail = Omit<Pessoa, 'email'>;
+
+const pessoa: PessoaSemEmail = {
+  nome: 'João',
+  idade: 25,
+  // email: 'joao@example.com' // Isso causaria um erro, pois 'email' foi omitido
+};
+
+O Omit é útil quando você quer criar uma versão simplificada de um tipo, removendo propriedades que não são necessárias em um determinado contexto. 
+Isso ajuda a evitar erros e a manter o código mais limpo.
+
+2. Pick
+O Pick (“selecionar”) é o oposto do Omit. Ele cria um novo tipo selecionando apenas algumas propriedades de um tipo existente. 
+É como escolher apenas as partes que você precisa de um objeto maior.
+
+Exemplo:
+
+type Pessoa = {
+  nome: string;
+  idade: number;
+  email: string;
+};
+
+type PessoaComNomeEEmail = Pick<Pessoa, 'nome' | 'email'>;
+
+const pessoa: PessoaComNomeEEmail = {
+  nome: 'Maria',
+  email: 'maria@example.com'
+  // idade: 30 // Isso causaria um erro, pois 'idade' não foi incluído
+};
+
+O Pick é útil quando você quer trabalhar apenas com algumas propriedades de um tipo, ignorando o resto. 
+Isso pode ser útil para criar interfaces de usuário ou para enviar dados específicos para uma API.
+
+3. Partial
+O Partial (“parcial”) transforma todas as propriedades de um tipo em opcionais. 
+Isso significa que você pode criar objetos que não precisam ter todas as propriedades definidas.
+
+Exemplo:
+
+type Produto = {
+  nome: string;
+  preco: number;
+  descricao: string;
+};
+
+type ProdutoParcial = Partial<Produto>;
+
+const produto: ProdutoParcial = {
+  nome: 'Camiseta'
+  // preco e descricao são opcionais
+};
+
+O Partial é útil quando você está lidando com objetos que podem estar em diferentes estados de completude. 
+Por exemplo, ao criar um formulário onde o usuário pode preencher apenas algumas informações de cada vez.
+
+4. Record
+O Record cria um tipo de objeto com um conjunto fixo de chaves e um tipo específico para os valores. 
+É como um mapa onde todas as chaves têm o mesmo tipo de valor.
+
+Exemplo:
+
+type Status = 'ativo' | 'inativo';
+
+type UsuarioStatus = Record<string, Status>;
+
+const usuarios: UsuarioStatus = {
+  'usuario1': 'ativo',
+  'usuario2': 'inativo'
+  // As chaves são strings e os valores são do tipo Status
+};
+
+O Record é útil quando você precisa garantir que todas as chaves de um objeto tenham valores do mesmo tipo. 
+Isso é comum em situações onde você está lidando com coleções de dados, como listas de usuários ou produtos.
+
+Documentação oficial do TypeScript: https://www.typescriptlang.org/pt/docs/handbook/utility-types.html
+
+-----------------------
+
+useMemo:
+
+Ao desenvolver aplicações em React, um dos principais pontos a se preocupar é o desempenho.
+Se o seu componente fizer cálculos pesados ou precisar de processamento complexo em várias renderizações, ele pode ficar mais lento.
+Para evitar que você perca desempenho em suas aplicações, o React possui um hook especial: o hook useMemo.
+O useMemo serve para memorizar (ou "lembrar") o resultado de uma “função cara”, isto é, uma função de alto custo em desempenho. 
+Isso significa que o React vai guardar o valor de um cálculo e só vai recalculá-lo quando realmente for necessário, ou seja, 
+quando alguma dependência do cálculo mudar. Isso ajuda a evitar cálculos desnecessários e melhora a performance da aplicação.
+
+1. Por que usar o useMemo?
+Imagine que você tem um componente onde a função precisa somar todos os números de uma lista grande.
+Se o componente for re-renderizado várias vezes (por exemplo, porque algum estado mudou), essa soma seria feita várias vezes também, o que pode ser bem lento.
+Com o useMemo, você garante que o cálculo só será feito novamente quando a lista de números mudar, evitando recalcular algo que já foi feito antes.
+O useMemo funciona de uma maneira parecida com o useEffect.
+Porém, enquanto o useEffect serve para executar efeitos colaterais (como fazer uma requisição de rede), o useMemo serve para memorizar o resultado de um cálculo.
+
+O useMemo recebe dois parâmetros:
+
+  A função que você quer memorizar;
+  A lista de dependências que vai definir quando a função será reexecutada.
+
+O valor memorizado só será recalculado se alguma das dependências mudar.
+
+    import React, { useMemo } from 'react';
+    
+    interface CalculationProps {
+      numbers: number[];
+    }
+    
+    const SumCalculator = ({ numbers }: CalculationProps) => {
+      // Função que faz um cálculo pesado
+      const sum = useMemo(() => {
+        console.log('Calculando a soma...');
+        return numbers.reduce((total, num) => total + num, 0);
+      }, [numbers]); // A soma só será recalculada se 'numbers' mudar
+    
+      return <div>A soma é: {sum}</div>;
+    };
+    
+    export default SumCalculator;
+
+A função reduce soma todos os números de um array. A cada renderização, o useMemo verifica se a lista numbers mudou.
+
+Se a lista não mudar, o React irá reutilizar o valor calculado anteriormente, sem precisar executar o cálculo de novo. Caso contrário, o cálculo será refeito.
+
+O componente renderiza a soma calculada na tela, mas o cálculo só vai ser feito novamente se a lista de números (numbers) mudar.
+
+2. Quando useMemo é mais útil?
+  - Cálculos pesados: se você tem funções que fazem cálculos complexos e demorados (como somar números grandes ou ordenar uma lista);
+  - Renderizações frequentes: se o seu componente está sendo renderizado frequentemente, mas o cálculo não muda a cada renderização;
+  - Dependências estáveis: se as dependências da sua função (como o array de números no exemplo) mudam pouco ou nunca.
+
+3. Quando evitar o useMemo?
+
+
+- Cálculos simples: se o cálculo é rápido e não impacta muito o desempenho, o useMemo pode ser um exagero e adicionar complexidade desnecessária ao código;
+- Dependências que mudam sempre: se as dependências do cálculo mudam em toda renderização, o useMemo não vai ter vantagem. Ele só vale a pena quando as dependências são relativamente estáveis;
+- Otimização prematura: não use useMemo apenas por precaução. Primeiro, identifique onde o desempenho realmente está sendo impactado antes de otimizar.
+
+documentação do React para o useMemo: https://react.dev/reference/react/useMemo
+

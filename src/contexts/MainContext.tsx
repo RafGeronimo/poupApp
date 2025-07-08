@@ -26,10 +26,9 @@ const MainProvider = ({ children }: MainProviderProps) => {
     queryFn: async () => {
       try {
         const userList = await getUsers();
-        setUser(userList[0]);
+        setUser(userList[1]);
       } catch (error) {
         console.error(`Error fetching users data: ${error}`);
-        return undefined;
       }
     },
   });
@@ -42,7 +41,6 @@ const MainProvider = ({ children }: MainProviderProps) => {
         setTransactions(transactionsList);
       } catch (error) {
         console.error(`Error fetching user transactions: ${error}`);
-        return undefined;
       }
     },
   });
