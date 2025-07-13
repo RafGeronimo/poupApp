@@ -9,16 +9,16 @@ interface MainProviderProps {
 }
 
 interface MainContextProps {
-  user?: IUser;
+  user: IUser | null;
   createNewUser: (user: Omit<IUser, "id" | "dailyBalance">) => Promise<void>;
   transactions: ITransaction[];
-  createNewTransaction: (transaction: Omit<ITransaction, "id">) => Promise<void>;
+  createNewTransaction: (transaction: Omit<ITransaction, "id" | "userId">) => Promise<void>;
 }
 
 export const MainContext = createContext<MainContextProps | undefined>(undefined);
 
 const MainProvider = ({ children }: MainProviderProps) => {
-  const [user, setUser] = useState<IUser>();
+  const [user, setUser] = useState<IUser | null>(null);
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
   useQuery({
@@ -26,7 +26,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
     queryFn: async () => {
       try {
         const userList = await getUsers();
-        setUser(userList[1]);
+        setUser(userList[0]);
       } catch (error) {
         console.error(`Error fetching users data: ${error}`);
       }
@@ -54,10 +54,12 @@ const MainProvider = ({ children }: MainProviderProps) => {
     }
   };
 
-  const createNewTransaction = async (transaction: Omit<ITransaction, "id">) => {
+  const createNewTransaction = async (transaction: Omit<ITransaction, "id" | "userId">) => {
     try {
-      const newTransaction = await createTransaction(transaction);
+      if (!user) throw Error("User must exist");
+      const { transaction: newTransaction, newDailyBalance } = await createTransaction(transaction, user);
       setTransactions((prev) => [...prev, newTransaction]);
+      setUser((prev) => (prev ? { ...prev, dailyBalance: newDailyBalance } : null));
     } catch (error) {
       console.error(error);
     }

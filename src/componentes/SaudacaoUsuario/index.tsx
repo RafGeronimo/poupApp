@@ -17,6 +17,8 @@ export const StyledUsuario = styled.div`
 const SaudacaoUsuario = () => {
   const { user } = useMainContext();
 
+  console.log("user", user);
+
   return (
     <StyledUsuario>
       <h1>Olá, {user?.name}</h1>

@@ -12,4 +12,5 @@ export interface ITransaction {
   type: "income" | "expense";
   category: string;
   date: string;
+  userId: string;
 }

@@ -18,8 +18,8 @@ const GlobalStyle = createGlobalStyle`
   --cor-neutra-medium: #33353f;
   --cor-neutra-light: #f5f5f5;
   --cor-primaria: #7693ff;
-  --cor-secundaria-receita: #d6ff62;
-  --cor-secundaria-despesa: #f87828;
+  --cor-secundaria-income: #d6ff62;
+  --cor-secundaria-expense: #f87828;
 
   --border-radius-s: 0.5rem;
   --border-radius-m: 1rem;

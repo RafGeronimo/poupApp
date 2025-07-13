@@ -11,6 +11,7 @@ import Fieldset from "../Fieldset";
 import Modal, { ModalHandle } from "../Modal";
 import { SelectGroup, SelectOption } from "../Select";
 import useMainContext from "../../hooks/useMainContext";
+import { ITransaction } from "../../types";
 
 export const Container = styled(CartaoCorpo)`
   padding: var(--padding-l) var(--padding-m);
@@ -40,8 +41,8 @@ export const ListaMovimentacoes = styled.ul`
 
 const Transacoes = () => {
   const ref = useRef<ModalHandle>({ open: () => undefined, close: () => undefined });
-  const { transactions, createNewTransaction } = useMainContext();
-  const [newTransaction, setNewTransaction] = useState({
+  const { transactions, createNewTransaction, user } = useMainContext();
+  const [newTransaction, setNewTransaction] = useState<Omit<ITransaction, "userId" | "id">>({
     name: "",
     value: 0,
     type: "income" as "income" | "expense",
@@ -54,17 +55,19 @@ const Transacoes = () => {
   };
 
   const onSubmit = async () => {
-    try {
-      await createNewTransaction(newTransaction);
-      setNewTransaction({
-        name: "",
-        value: 0,
-        type: "income" as "income" | "expense",
-        category: "",
-        date: "",
-      });
-    } catch (error) {
-      console.error(error);
+    if (user) {
+      try {
+        await createNewTransaction(newTransaction);
+        setNewTransaction({
+          name: "",
+          value: 0,
+          type: "income" as "income" | "expense",
+          category: "",
+          date: "",
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -100,7 +103,7 @@ const Transacoes = () => {
                 id="valor"
                 placeholder="10"
                 value={newTransaction.value}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange("value", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange("value", parseFloat(e.target.value))}
               />
             </Fieldset>
             <Fieldset>
@@ -111,8 +114,8 @@ const Transacoes = () => {
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChange("type", e.target.value)}
               >
                 <SelectOption value="">Selecione o tipo</SelectOption>
-                <SelectOption value="receita">Receita</SelectOption>
-                <SelectOption value="despesa">Despesa</SelectOption>
+                <SelectOption value="income">receita</SelectOption>
+                <SelectOption value="expense">despesa</SelectOption>
               </SelectGroup>
             </Fieldset>
             <Fieldset>

@@ -17,10 +17,7 @@ interface TituloTransacaoProps {
 }
 
 export const TituloTransacao = styled.div<TituloTransacaoProps>`
-  color: ${(props) =>
-    props.$tipo === "receita"
-      ? "var(--cor-secundaria-receita)"
-      : "var(--cor-secundaria-despesa)"};
+  color: ${(props) => (props.$tipo === "income" ? "var(--cor-secundaria-income)" : "var(--cor-secundaria-expense)")};
   display: flex;
   flex-direction: column;
   align-items: start;

@@ -1,4 +1,48 @@
 {
-  "users": [],
-  "transactions": []
+  "users": [
+    {
+      "id": "c91a",
+      "name": "Rafael",
+      "income": 9000,
+      "dailyBalance": 100
+    }
+  ],
+  "transactions": [
+    {
+      "id": "5941",
+      "name": "Mercado",
+      "value": 100,
+      "type": "expense",
+      "category": "Alimentação",
+      "date": "2025-07-13",
+      "userId": "c91a"
+    },
+    {
+      "id": "6105",
+      "name": "pix",
+      "value": 150,
+      "type": "income",
+      "category": "Investimentos",
+      "date": "2025-07-13",
+      "userId": "c91a"
+    },
+    {
+      "id": "4868",
+      "name": "pix",
+      "value": 180,
+      "type": "expense",
+      "category": "Games",
+      "date": "2025-07-13",
+      "userId": "c91a"
+    },
+    {
+      "id": "91b2",
+      "name": "Mercado",
+      "value": 70,
+      "type": "expense",
+      "category": "Casa",
+      "date": "2025-07-15",
+      "userId": "c91a"
+    }
+  ]
 }

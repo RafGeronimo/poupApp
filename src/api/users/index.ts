@@ -12,7 +12,7 @@ export const createUser = async (user: Omit<IUser, "id" | "dailyBalance">): Prom
   return data;
 };
 
-export const updateUser = async (user: IUser) => {
-  const { data } = await api.patch(`/users/${user.id}`, user);
+export const updateUser = async (userId: string, userData: Partial<IUser>) => {
+  const { data } = await api.patch<IUser>(`/users/${userId}`, { ...userData });
   return data;
 };
