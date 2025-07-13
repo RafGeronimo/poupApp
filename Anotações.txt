@@ -458,3 +458,4 @@ O componente renderiza a soma calculada na tela, mas o cálculo só vai ser feit
 
 documentação do React para o useMemo: https://react.dev/reference/react/useMemo
 
+Repositório com perguntas sobre React: https://react-typescript-cheatsheet.netlify.app/docs/basic/setup/
